@@ -18,7 +18,7 @@ oper = '移动'
 '''
 # 获取登录页面网址
 def ReturnStartUrl():
-    return "http://223.5.5.5"
+    return "http://autewifi.net"
 
 # 警告信息
 def AlartInfo(result):
