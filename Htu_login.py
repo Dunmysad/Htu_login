@@ -9,8 +9,8 @@ import time
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
 userid = '1928424***'
-passwd = '******'   # 宿舍密码
-passwd_jxl = '308533' # 教学楼密码
+passwd = '*************'
+passwd_jxl = '308533'
 oper = '移动'
 '''
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -18,7 +18,7 @@ oper = '移动'
 '''
 # 获取登录页面网址
 def ReturnStartUrl():
-    return "http://autewifi.net"
+    return "http://223.5.5.5"
 
 # 警告信息
 def AlartInfo(result):
@@ -273,11 +273,10 @@ def login(Location):
             }
 
         response = requests.post(url=login_PostURL, data=data, headers=headers)
-        if '404' or '403' in response.text:
+        if '404' in response.text:
             print('登录成功')
         else:
             error = response.text
-            print(error)
             e = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
             print(f'{e}')
 
