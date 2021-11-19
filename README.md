@@ -11,4 +11,4 @@
 - 自动登录
 - 检测是否连接校园网wifi
 - 检测是否已经连接校园网 可选择是否登出
-[![https://forevershare.life/wp-content/uploads/2021/10/login-1.gif][https://forevershare.life/wp-content/uploads/2021/10/login-1.gif](https://forevershare.life/wp-content/uploads/2021/10/login-1.gif)
+[![https://forevershare.life/wp-content/uploads/2021/10/login-1.gif][https://forevershare.life/wp-content/uploads/2021/10/login-1.gif]](https://forevershare.life/wp-content/uploads/2021/10/login-1.gif)
