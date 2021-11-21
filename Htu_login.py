@@ -275,7 +275,7 @@ def login(Location):
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         if '404' in response.text:
             print('登录成功')
-        elif '403' in reponse.text:
+        elif '403' in response.text:
             print('实训楼 登陆成功')
         else:
             error = response.text
