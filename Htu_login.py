@@ -281,7 +281,7 @@ def login(Location):
             error = response.text
             try:
                 e = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
-                printn(f'e')
+                print(f'{e}')
                 input()
             except Exception as e:
                 print(f'{e}')
