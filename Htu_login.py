@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
 import requests
 from lxml import etree
+import webbrowser
 import re
 import sys
 import time
@@ -8,9 +10,9 @@ import time
 在下方完善信息
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
-userid = '1928424***'
-passwd = '******'
-passwd_jxl = '308533'
+userid = '1928424157'   
+passwd = 'FMY15890868222'   # 宿舍密码
+passwd_jxl = 'FMY15890868222' # 教学楼密码
 oper = '移动'
 '''
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -68,8 +70,6 @@ def ReturnLocation(Start_Url):
     response = requests.get(Start_Url)
     if '河南师范大学校园网登录' in response.text:
         return Location + '宿舍'
-    elif 'UrlPathError\n' in response.text:
-        return Location
     else:
         return Location + '教学楼'
 
@@ -87,26 +87,25 @@ def GetInfo(Start_Url,location):
     response = requests.get(url=Start_Url)
     if location == '宿舍':
         try:     
-            NextUrl = response.url  # return http://10.101.2.199/portalReceiveAction.do?wlanuserip=10.104.28.190&wlanacname=HSD-BRAS-SR8808/X-2
-            cookies = response.headers['Set-Cookie']    # return JSESSIONID=5EE018CF5886AF0193D6BC539E31C59C; Path=/; HttpOnly
-            cookie = re.findall(r'.*(?=; Path)', cookies)[0]    # return JSESSIONID=5EE018CF5886AF0193D6BC539E31C59C
+            NextUrl = response.url  
+            cookies = response.headers['Set-Cookie']
+            cookie = re.findall(r'.*(?=; Path)', cookies)[0]    
         except Exception as e:
             islogOut()
     elif location == '教学楼':
         try:
-            NextUrl = re.findall(r'(?<=location.href=\").*(?=\")', response.text)[0] # retuen http://210.42.255.130/portalReceiveAction.do?wlanuserip=10.37.133.141&wlanacname=HNSFDX_H3C-S8808-X
-            cookies = requests.get(NextUrl).headers['Set-Cookie']  # return JSESSIONID=5EE018CF5886AF0193D6BC539E31C59C; Path=/; HttpOnly
-            cookie = re.findall(r'.*(?=; Path)', cookies)[0]  # return JSESSIONID=87F3916E17CF62EE0D69B85C23551EEB.worker1      
+            NextUrl = re.findall(r'(?<=location.href=\").*(?=\")', response.text)[0] 
+            cookies = requests.get(NextUrl).headers['Set-Cookie']  
+            cookie = re.findall(r'.*(?=; Path)', cookies)[0]  
         except Exception as e:
             islogOut()
     else:
         islogOut()
     html = etree.HTML(requests.get(url=NextUrl).text)
-    WlanacIp = html.xpath('//input[@id="wlanacIp"]/@value')[0]    # return 10.101.2.35
-    wlanuserip = re.findall(r'(?<=wlanuserip=).*(?=&)', NextUrl)[0]     # return 10.104.28.190
-    wlanacIp = re.findall(r'(?<=//).*(?=/po)', NextUrl)[0]  # return 10.101.2.199
-    wlanacname = re.findall(r'(?<=wlanacname=).*', NextUrl)[0]  # return HSD-BRAS-SR8808/X-2    
-
+    WlanacIp = html.xpath('//input[@id="wlanacIp"]/@value')[0]    
+    wlanuserip = re.findall(r'(?<=wlanuserip=).*(?=&)', NextUrl)[0]     
+    wlanacIp = re.findall(r'(?<=//).*(?=/po)', NextUrl)[0]  
+    wlanacname = re.findall(r'(?<=wlanacname=).*', NextUrl)[0]  
     return NextUrl, wlanuserip, wlanacIp, cookie, wlanacname, WlanacIp, NextUrl
 
 # 登录
@@ -273,10 +272,11 @@ def login(Location):
             }
 
         response = requests.post(url=login_PostURL, data=data, headers=headers)
-        if '404' in response.text:
-            print('登录成功')
-        elif '403' in response.text:
-            print('实训楼 登陆成功')
+        # print(response.text)
+        if '百度' in requests.get('https://www.baidu.com').content.decode():
+            print('登陆成功')
+            webbrowser.open('https://www.htu.edu.cn')
+            sys.exit()
         else:
             error = response.text
             try:
