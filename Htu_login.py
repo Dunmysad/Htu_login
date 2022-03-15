@@ -10,10 +10,10 @@ import time
 在下方完善信息
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
-userid = ''   # 学号
-passwd = ''   # 宿舍密码
+userid = '1928424157'   # 学号
+passwd = 'FMY15890868222'   # 宿舍密码
 passwd_jxl = '' # 教学楼密码
-oper = '' # 手机运营商
+oper = '移动' # 手机运营商
 '''
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 在上方完善信息
@@ -30,13 +30,13 @@ def AlartInfo(result):
     print(f'{alert}')
     input()
 
-# 登录成功信息
+# 宿舍登录信息
 def SuccessInfo(result):
     realName = etree.HTML(result.text).xpath('//input[@id="realName"]/@value')[0]
     title = etree.HTML(result.text).xpath('//title/text()')[0]
     school = re.findall(r'.*(?=校园网)', title)[0]
     print(f'{school + realName}登陆成功!')
-    input()
+    webbrowser.open('https://www.htu.edu.cn')
 
 # 是否选择登出
 def islogOut():
@@ -70,6 +70,8 @@ def ReturnLocation(Start_Url):
     response = requests.get(Start_Url)
     if '河南师范大学校园网登录' in response.text:
         return Location + '宿舍'
+    elif 'UrlPathError\n' in response.text:
+        return Location
     else:
         return Location + '教学楼'
 
@@ -201,11 +203,10 @@ def login(Location):
                             continue 
                     else:
                         AlartInfo(result)
+                        input()
         except:
-            if IsConnected(Start_Url):
-                SuccessInfo(result)
-            else:
-                AlartInfo(result)
+            AlartInfo(result)
+            input()
 
 
     elif Location == '教学楼':
@@ -273,10 +274,10 @@ def login(Location):
 
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
+        # 教学楼登录信息
         if '百度' in requests.get('https://www.baidu.com').content.decode():
             print('登陆成功')
             webbrowser.open('https://www.htu.edu.cn')
-            sys.exit()
         else:
             error = response.text
             try:
