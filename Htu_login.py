@@ -10,10 +10,10 @@ import time
 在下方完善信息
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
-userid = ''   # 学号
-passwd = ''   # 宿舍密码
-passwd_jxl = '' # 教学楼密码
-oper = '' # 手机运营商
+userid = '1819124072'
+passwd = '144019'
+passwd_jxl = '144019'
+oper = '移动'
 '''
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 在上方完善信息
@@ -275,10 +275,11 @@ def login(Location):
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
         # 教学楼登录信息
-        if '百度' in requests.get('https://www.baidu.com').content.decode():
+        try:
+            requests.get('https://www.baidu.com')
             print('登陆成功')
             webbrowser.open('https://www.htu.edu.cn')
-        else:
+        except Exception as e:
             error = response.text
             try:
                 e = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
