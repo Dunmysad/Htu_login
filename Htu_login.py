@@ -294,18 +294,26 @@ def ReConnect():
         try:
             '百度' in requests.get('http://www.baidu.com').content.decode()
             T2 = time.perf_counter()
-            print(f'\r time wait : {round(T2 - T1)} s ', end='')
+            print(f'\r    time wait : {round(T2 - T1)} s ', end='')
         except(ValueError, ArithmeticError):
-            print(f'\n 网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 断开')
-            print('\n 3 s 后重新连接校园网')
+            print(f'\n网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 断开')
+            print('\n3 s 后重新连接校园网')
             time.sleep(3)
+            print(f'\n网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 尝试连接')
             os.system('python login.py')
-            print(f'\n 网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 重新连接')
+
+# 检测信息是否为空
+def checkInfo(Location):
+    info = [userid, passwd, passwd_jxl, oper]
+    info_name = ['userid', 'passwd', 'passwd_jxl', 'oper']
+    if '' in info:
+        input(f"请确保 {info_name[info.index('')]} 不为空")
 
 if __name__ == '__main__':
     Start_Url = ReturnStartUrl()
     if IsConnected(Start_Url):
         location = ReturnLocation(Start_Url)
+        checkInfo(location)
         if location == '':
             islogOut()
         if IsConnected(Start_Url):
@@ -313,5 +321,4 @@ if __name__ == '__main__':
             login(location)
             ReConnect()
     else:
-        print(f'未连接到校园网络')
-        input()
+        input(f'未连接到校园网络')
