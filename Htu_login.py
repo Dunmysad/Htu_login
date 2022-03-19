@@ -5,13 +5,13 @@ import webbrowser
 import re
 import sys
 import time
-
+import os
 '''
 在下方完善信息
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
-userid = '' # 学号
-passwd = '' # 宿舍密码
+userid = ''   # 学号
+passwd = ''   # 宿舍密码
 passwd_jxl = '' # 教学楼密码
 oper = '' # 手机运营商
 '''
@@ -40,7 +40,7 @@ def SuccessInfo(result):
 
 # 是否选择登出
 def islogOut():
-    logOut = input(f'已经登录,请勿重复登录! \n是否登出? (yes/y or no/n)\n')
+    logOut = input(f'已经登录,请勿重复登录! \n是否登出? (yes/y or no/n)选择不登出将进入等待模式！\n ')
     if logOut in ['yes', 'y']:
         url = "http://autewifi.net/loginOut"
 
@@ -62,7 +62,7 @@ def islogOut():
         else:
             pass
     else:
-        sys.exit()
+        ReConnect()
 
 # 检测登录地
 def ReturnLocation(Start_Url):
@@ -275,11 +275,10 @@ def login(Location):
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
         # 教学楼登录信息
-        try:
-            requests.get('https://www.baidu.com')
+        if '百度' in requests.get('https://www.baidu.com').content.decode():
             print('登陆成功')
             webbrowser.open('https://www.htu.edu.cn')
-        except Exception as e:
+        else:
             error = response.text
             try:
                 e = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
@@ -288,6 +287,20 @@ def login(Location):
             except Exception as e:
                 print(f'{e}')
                 input()
+def ReConnect():
+    print("程序进入等待模式")
+    T1 = time.perf_counter()
+    while True:
+        try:
+            '百度' in requests.get('http://www.baidu.com').content.decode()
+            T2 = time.perf_counter()
+            print(f'\r time wait : {round(T2 - T1)} s ', end='')
+        except(ValueError, ArithmeticError):
+            print(f'\n 网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 断开')
+            print('\n 3 s 后重新连接校园网')
+            time.sleep(3)
+            os.system('python login.py')
+            print(f'\n 网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 重新连接')
 
 if __name__ == '__main__':
     Start_Url = ReturnStartUrl()
@@ -298,6 +311,7 @@ if __name__ == '__main__':
         if IsConnected(Start_Url):
             print(f'现在您正处于{location}')
             login(location)
+            ReConnect()
     else:
         print(f'未连接到校园网络')
         input()
