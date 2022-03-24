@@ -37,6 +37,7 @@ def SuccessInfo(result):
     school = re.findall(r'.*(?=校园网)', title)[0]
     print(f'{school + realName}登陆成功!')
     webbrowser.open('https://www.htu.edu.cn')
+    ReConnect()
 
 # 是否选择登出
 def islogOut():
