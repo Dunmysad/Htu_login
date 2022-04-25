@@ -122,7 +122,6 @@ def login(Location):
     if Location == '宿舍':
         yys={'移动': '@yd', '联通': '@lt', '电信': '@dx'}
         operator = yys[oper]
-
         data = {
                 'wlanuserip': wlanuserip,
                 'wlanacname': wlanacname,
@@ -216,7 +215,6 @@ def login(Location):
 
 
     elif Location == '教学楼':
-
         headers = {
             'Host': wlanacIp,
             'Content-Length': '600',
@@ -277,7 +275,6 @@ def login(Location):
             'useridtemp': userid,
             'passwd': passwd_jxl
             }
-
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
         # 教学楼登录信息
