@@ -18,6 +18,10 @@ oper = '' # 手机运营商 移动 / 联通 / 电信
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 在上方完善信息
 '''
+# 禁用requests的代理
+os.environ['NO_PROXY'] = "baidu.com"
+os.environ['NO_PROXY'] = "htu.edu.cn"
+
 # 获取登录页面网址
 def ReturnStartUrl():
     return "http://223.5.5.5"
@@ -277,9 +281,8 @@ def login(Location):
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
         # 教学楼登录信息
-        if '百度' in requests.get('https://www.baidu.com').content.decode():
+        if '百度' in requests.get('https://www.baidu.com').content.decode() and webbrowser.open('https://www.htu.edu.cn'):
             print('登陆成功')
-            webbrowser.open('https://www.htu.edu.cn')
         else:
             error = response.text
             try:
