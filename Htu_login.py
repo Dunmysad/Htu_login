@@ -19,8 +19,7 @@ oper = '' # 手机运营商 移动 / 联通 / 电信
 在上方完善信息
 '''
 # 禁用requests的代理
-os.environ['NO_PROXY'] = "baidu.com"
-os.environ['NO_PROXY'] = "htu.edu.cn"
+os.environ['NO_PROXY'] = "*"
 
 # 获取登录页面网址
 def ReturnStartUrl():
@@ -30,16 +29,16 @@ def ReturnStartUrl():
 def AlartInfo(result):
     html = etree.HTML(result.text)
     error = html.xpath('//script/text()')[0]
-    alert = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
+    try:
+        alert = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
+    except Exception as e:
+        print(e)
     print(f'{alert}')
     input()
 
 # 宿舍登录信息
 def SuccessInfo(result):
-    realName = etree.HTML(result.text).xpath('//input[@id="realName"]/@value')[0]
-    title = etree.HTML(result.text).xpath('//title/text()')[0]
-    school = re.findall(r'.*(?=校园网)', title)[0]
-    print(f'{school + realName}登陆成功!')
+    print(f'登陆成功!')
     webbrowser.open('https://www.htu.edu.cn')
     ReConnect()
 
