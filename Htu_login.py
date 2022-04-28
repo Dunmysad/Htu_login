@@ -37,7 +37,8 @@ def AlartInfo(result):
     input()
 
 # 宿舍登录信息
-def SuccessInfo(result):
+# 需要重新抓新的html中信息进行判断result.text
+def SuccessInfo():
     print(f'登陆成功!')
     webbrowser.open('https://www.htu.edu.cn')
     ReConnect()
@@ -47,11 +48,9 @@ def islogOut():
     logOut = input(f'已经登录,请勿重复登录! \n是否登出? (yes/y or no/n)选择不登出将进入等待模式！\n ')
     if logOut in ['yes', 'y']:
         url = "http://autewifi.net/loginOut"
-
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
         } 
-
         response = requests.post(url=url, headers=headers)
         if IsConnected(Start_Url):
             try:
@@ -118,6 +117,8 @@ def GetInfo(Start_Url,location):
 def login(Location):
     NextUrl, wlanuserip, wlanacIp, cookie, wlanacname, WlanacIp, NextUrl = GetInfo(Start_Url, location)
     login_PostURL = f'http://{wlanacIp}/portalAuthAction.do'
+
+    # 宿舍登陆
     if Location == '宿舍':
         yys={'移动': '@yd', '联通': '@lt', '电信': '@dx'}
         operator = yys[oper]
@@ -171,7 +172,6 @@ def login(Location):
                 'useridtemp': userid + operator,
                 'operator': operator
                }
-
         headers = {
             'Host': wlanacIp,
             'Content-Length': '666',
@@ -187,6 +187,8 @@ def login(Location):
             'Cookie': cookie,
             'Connection': 'close',
         }
+
+        # 宿舍登陆处理
         try:   
             while True:
                     result = requests.post(url=login_PostURL, data=data, headers=headers)
@@ -199,7 +201,7 @@ def login(Location):
                         continue
                     elif '5' in result.text:
                         if IsConnected(Start_Url):
-                            SuccessInfo(result)
+                            SuccessInfo()
                             break
                         else:
                             print(f'正在等待，5s后再次登录')
@@ -212,7 +214,7 @@ def login(Location):
             AlartInfo(result)
             input()
 
-
+    # 教学楼登陆
     elif Location == '教学楼':
         headers = {
             'Host': wlanacIp,
@@ -225,7 +227,6 @@ def login(Location):
             'Accept - Encoding': 'gzip, deflate',
             'Accept - Language': 'zh - CN, zh;q = 0.9',
             }
-
         data = {
             'wlanuserip': wlanuserip,
             "wlanacname": wlanacname,
@@ -276,9 +277,10 @@ def login(Location):
             }
         response = requests.post(url=login_PostURL, data=data, headers=headers)
         # print(response.text)
+
         # 教学楼登录信息
-        if '百度' in requests.get('https://www.baidu.com').content.decode() and webbrowser.open('https://www.htu.edu.cn'):
-            print('登陆成功')
+        if '百度' in requests.get('https://www.baidu.com').content.decode():
+            SuccessInfo()
         else:
             error = response.text
             try:
@@ -288,6 +290,8 @@ def login(Location):
             except Exception as e:
                 print(f'{e}')
                 input()
+
+# 等待模式            
 def ReConnect():
     print("程序进入等待模式")
     T1 = time.perf_counter()
