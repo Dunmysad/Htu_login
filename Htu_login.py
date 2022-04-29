@@ -10,10 +10,10 @@ import os
 在下方完善信息
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 '''
-userid = ''   # 学号
-passwd = ''   # 宿舍密码
-passwd_jxl = '' # 教学楼密码
-oper = '' # 手机运营商 移动 / 联通 / 电信
+userid = '1928424157'   # 学号
+passwd = 'FMY15890868222'   # 宿舍密码
+passwd_jxl = '22' # 教学楼密码
+oper = '移动' # 手机运营商 移动 / 联通 / 电信
 '''
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 在上方完善信息
@@ -38,10 +38,14 @@ def AlartInfo(result):
 
 # 宿舍登录信息
 # 需要重新抓新的html中信息进行判断result.text
-def SuccessInfo():
-    print(f'登陆成功!')
-    webbrowser.open('https://www.htu.edu.cn')
-    ReConnect()
+def SuccessInfo(result):
+    if '校园黄页' in result.content.decode():
+        print(f'登陆成功!')
+        webbrowser.open('https://www.htu.edu.cn')
+        ReConnect()
+    else:
+        # print(result.content.decode())
+        input('未知错误')
 
 # 是否选择登出
 def islogOut():
@@ -201,7 +205,7 @@ def login(Location):
                         continue
                     elif '5' in result.text:
                         if IsConnected(Start_Url):
-                            SuccessInfo()
+                            SuccessInfo(result)
                             break
                         else:
                             print(f'正在等待，5s后再次登录')
@@ -280,7 +284,7 @@ def login(Location):
 
         # 教学楼登录信息
         if '百度' in requests.get('https://www.baidu.com').content.decode():
-            SuccessInfo()
+            print('登录成功')
         else:
             error = response.text
             try:
