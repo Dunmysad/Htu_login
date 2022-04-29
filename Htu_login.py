@@ -317,6 +317,7 @@ def checkInfo(Location):
     info_name = ['userid', 'passwd', 'passwd_jxl', 'oper']
     if '' in info:
         input(f"请确保 {info_name[info.index('')]} 不为空")
+        sys.exit()
 
 if __name__ == '__main__':
     Start_Url = ReturnStartUrl()
