@@ -23,7 +23,7 @@ os.environ['NO_PROXY'] = "*"
 
 # 获取登录页面网址
 def ReturnStartUrl():
-    return "http://223.5.5.5"
+    return "http://114.114.114"
 
 # 警告信息
 def AlartInfo(result):
@@ -37,11 +37,9 @@ def AlartInfo(result):
     input()
 
 # 宿舍登录信息
-# 需要重新抓新的html中信息进行判断result.text
 def SuccessInfo(result):
-    if '校园黄页' in result.content.decode():
+    if '校园黄页' in result.content.decode() and webbrowser.open('https://www.htu.edu.cn'):
         print(f'登陆成功!')
-        webbrowser.open('https://www.htu.edu.cn')
         ReConnect()
     else:
         # print(result.content.decode())
@@ -309,7 +307,7 @@ def ReConnect():
             print('\n3 s 后重新连接校园网')
             time.sleep(3)
             print(f'\n网络于 {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} 尝试连接')
-            os.system('python login.py')
+            os.system('python Htu_login.py')
 
 # 检测信息是否为空
 def checkInfo(Location):
