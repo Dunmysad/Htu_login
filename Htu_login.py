@@ -23,7 +23,7 @@ os.environ['NO_PROXY'] = "*"
 
 # 获取登录页面网址
 def ReturnStartUrl():
-    return "http://114.114.114"
+    return "http://223.5.5.5"
 
 # 警告信息
 def AlartInfo(result):
