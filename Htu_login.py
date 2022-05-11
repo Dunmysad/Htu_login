@@ -39,7 +39,7 @@ def AlartInfo(result):
 # 宿舍登录信息
 def SuccessInfo(result):
     if '河南师范大学校园网' in result.content.decode() and webbrowser.open('https://www.htu.edu.cn'):
-        resp = re.compile(r'<input id="realName" value=(?P<name>.*?) type="hidden">', re.S)
+        resp = re.compile(r'<input id="realName" value="(?P<name>.*?)" type="hidden">', re.S)
         res = resp.finditer(result.content.decode())
         for i in res:
             realName = i.group("name")
