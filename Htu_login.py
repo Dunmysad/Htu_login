@@ -31,16 +31,16 @@ def AlartInfo(result):
     error = html.xpath('//script/text()')[0]
     try:
         alert = re.findall(r'(?<=alert\(\').*(?=\')', error)[0]
+        print(f'{alert}')
     except Exception as e:
         print(e)
-    print(f'{alert}')
     input()
 
 # 宿舍登录信息
 def SuccessInfo(result):
     if '河南师范大学校园网' in result.content.decode() and webbrowser.open('https://www.htu.edu.cn'):
         resp = re.compile(r'<input id="realName" value=(?P<name>.*?) type="hidden">', re.S)
-        res = resp.finditer(result)
+        res = resp.finditer(result.content.decode())
         for i in res:
             realName = i.group("name")
         print(f'{realName}登陆成功!')
