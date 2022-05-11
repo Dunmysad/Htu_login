@@ -43,7 +43,7 @@ def SuccessInfo(result):
         res = resp.finditer(result)
         for i in res:
             realName = i.group("name")
-        print(f'{reslName}登陆成功!')
+        print(f'{realName}登陆成功!')
         ReConnect()
     else:
         # print(result.content.decode())
